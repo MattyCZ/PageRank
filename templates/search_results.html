@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h1>Search results for {{ search_value }}</h1>
+    {% for val in return_values %}
+        <h3><a href="{{ val['url'] }}">{{ val['name'] }} </a></h3>
+        {{ val['text'] }}
+    {% endfor %}
+</body>
+</html>
