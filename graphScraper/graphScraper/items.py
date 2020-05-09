@@ -11,6 +11,7 @@ import scrapy
 class GraphscraperItem(scrapy.Item):
     # define the fields for your item here like:
     url = scrapy.Field()
+    title = scrapy.Field()
     slug = scrapy.Field()
     outlinks = scrapy.Field()
     text = scrapy.Field()

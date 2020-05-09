@@ -6,4 +6,4 @@ fi
 cd graphScraper
 scrapy crawl graph_scraper
 cd ..
-python pageRank.py
+python search.py

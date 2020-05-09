@@ -1,6 +1,19 @@
 from graph import Graph
 import numpy as np
 
+class ResultNode:
+    def __init__(self, rank = 0, url = '', title = '', index=0):
+        self.rank = rank
+        self.url = url
+        self.title = title
+        self.index = index
+
+    def __repr__(self):
+        return f'title: {self.title}, url: {self.url}, rank: {self.rank} \n'
+
+    def __str__(self):
+        return f'title: {self.title}, url: {self.url}, rank: {self.rank} \n'
+
 class PageRank :
 
     def __init__(self, dumping = 0.15, iterations = 10):
@@ -15,10 +28,12 @@ class PageRank :
         # google matrix for ranking
         self.google_matrix = None
         # load graph and adjanced data
+        self.result = []
         self.load()
 
     def load(self):
         self.graph = Graph()
+        self.graph.load()
         self.num_of_pages = self.graph.size
 
         '''
@@ -30,12 +45,10 @@ class PageRank :
         # load matrix A
         for key in self.graph:
             value = 0 if len(self.graph[key].outlinks) == 0 else 1 / len(self.graph[key].outlinks)
-            first_index = self.graph[key].index
 
             for key2 in self.graph[key].outlinks:
-                second_index = self.graph[key2].index
-                matrixA[second_index][first_index] = value
-        print(matrixA)
+                matrixA[key2][key] = value
+
         matrixA = (1-self.p)*matrixA
 
         # load matrix B
@@ -48,11 +61,18 @@ class PageRank :
 
     def calculateRank(self):
         #create vector V and iterate over it to gain better results
-
         vec = np.full(self.num_of_pages,1/self.num_of_pages)
         for i in range(self.MAX_ITER):
             vec = self.google_matrix @ vec
-        return vec
 
-rank = PageRank().calculateRank()
-print(rank)
+        #create the result
+        for i in self.graph:
+            resultNode = ResultNode(vec[i],self.graph[i].url, self.graph[i].title, i)
+            self.result.append(resultNode)
+
+        #sort the result according to the ranking
+        self.result.sort(key=lambda x: x.rank, reverse=True)
+        return self.result
+
+rank = PageRank()
+rank.calculateRank()

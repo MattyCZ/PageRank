@@ -10,8 +10,8 @@ from graphScraper.items import GraphscraperItem
 
 class GraphScraperSpider(scrapy.Spider):
     name = 'graph_scraper'
-    start_urls = ['https://en.wikipedia.org/wiki/Main_Page']
-    max_pages = 5
+    start_urls = ['https://en.wikipedia.org/wiki/Main_Page', 'https://dmoz-odp.org/']
+    max_pages = 100
     visited = set()
     scraped = 0
     mutex = Lock()
@@ -19,12 +19,15 @@ class GraphScraperSpider(scrapy.Spider):
     def parse(self, response):
 
         slug = slugify.slugify(response.request.url)
+        title = response.xpath("//title/text()").get()
+        title = ' '.join(BeautifulSoup(title, features="lxml").get_text().strip().split())
 
         dirtyText = ''.join(response.xpath("//body").getall())
         cleanText = ' '.join(BeautifulSoup(dirtyText, features="lxml").get_text().strip().split())
         links = set([response.urljoin(link) for link in response.xpath("//a/@href").getall()])
 
         item = GraphscraperItem()
+        item["title"] = title
         item["url"] = response.request.url
         item["slug"] = slug
         item["outlinks"] = set()

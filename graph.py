@@ -2,19 +2,17 @@ import json
 
 class Node:
     def __init__(self):
-        self.outlinks = None
         self.name = None
+        self.outlinks = None
+        self.title = None
         self.url = None
         self.text = None
         self.index = None
 
 class Graph:
     def __init__(self):
-        self.nodes = []
         self.size = 0
         self.graph = dict()
-
-        self.load()
 
     def __iter__(self):
         return iter(self.graph)
@@ -23,32 +21,25 @@ class Graph:
         return self.graph[item]
 
     def load(self):
-        files = []
-        num = 0
+        nodes = dict()
         with open("graphScraper/sitegraph.json") as file :
-            for line in file:
+            for index, line in enumerate(file):
                 j = json.loads(line)
 
                 node = Node()
-                node.url = j["url"]
                 node.name = j["slug"]
+                node.title = j["title"]
+                node.url = j["url"]
                 node.text = j["text"]
                 node.outlinks = j["outlinks"]
-                node.index = num
+                node.index = index
 
-                self.nodes.append(node)
-                files.append(j["slug"])
+                nodes[node.name] = node
+        self.size = len(nodes)
 
-                num+=1
+        # clean outlinks from unexisting pages and change the slugs to indexes.
+        for key in nodes:
+            nodes[key].outlinks = [nodes[x].index for x in nodes[key].outlinks if x in nodes.keys() and x != nodes[key].name]
 
-        self.size = len(files)
-
-        for node in self.nodes:
-            node.outlinks = [x for x in node.outlinks if x in files and x != node.name]
-
-        for node in self.nodes:
-            print(len(node.outlinks))
-            self.graph[node.name] = node
-
-
-        return self.graph
+        for key in nodes:
+            self.graph[nodes[key].index] = nodes[key]
