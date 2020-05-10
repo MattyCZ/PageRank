@@ -1,21 +1,13 @@
-{% from "_macros.html" import render_field %}
+{% extends 'base.html' %}
+{% block title %}Results for {{ search_value }}{% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <h1>Pagerank</h1>
-    <form action="{{ url_for('search_results') }}">
-        {{ render_field(form.searchVal) }}
-        <input type="submit" value="Submit">
-    </form>
-    <h2>Search results for {{ search_value }}</h2>
-    {% for val in return_values %}
-        <h3><a href="{{ val['url'] }}">{{ val['name'] }} </a></h3>
-        {{ val['text'] }}
-    {% endfor %}
-</body>
-</html>
+{% block page_content %}
+        <h4>Search results for {{ search_value }}</h4>
+        <ul>
+            {% for val in return_values %}
+                <li><h5><a href="{{ val['url'] }}">{{ val['name'] }} </a></h5>
+                    {{ val['text'] }}</li>
+            {% endfor %}
+        </ul>
+
+{% endblock %}

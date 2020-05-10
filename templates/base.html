@@ -1,0 +1,42 @@
+{% extends "bootstrap/base.html" %}
+{% from "_macros.html" import render_field %}
+
+{% block navbar %}
+    <form action="{{ url_for('search_results') }}">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="input-group stylish-input-group">
+                    {{ form.searchVal(class_='form-control', value=search_value or '')|safe }}
+                    <span class="input-group-addon">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        {% block page_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('.static', filename='navbar.css') }}">
+{% endblock %}

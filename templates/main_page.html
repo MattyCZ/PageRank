@@ -1,15 +1,13 @@
-{% from "_macros.html" import render_field %}
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pagerank</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}PageRank{% endblock %}
+{% block navbar %}{% endblock %}
+{% block page_content %}
     <h1>Pagerank</h1>
     <form action="{{ url_for('search_results') }}">
-        {{ render_field(form.searchVal) }}
-        <input type="submit" value="Submit">
+        <div class="row">
+            {{ render_field(form.searchVal) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-</body>
-</html>
+
+{% endblock %}
