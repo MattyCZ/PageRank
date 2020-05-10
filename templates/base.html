@@ -2,6 +2,7 @@
 {% from "_macros.html" import render_field %}
 
 {% block navbar %}
+    <a href="/" class="navbar-left"><img src="{{ url_for('.static', filename='logo.PNG') }}"></a>
     <form action="{{ url_for('search_results') }}">
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">

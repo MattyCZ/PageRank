@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}PageRank{% endblock %}
-{% block navbar %}{% endblock %}
+{% block navbar %}
+    <a href="/" class="navbar-left"><img src="{{ url_for('.static', filename='logo.PNG') }}"></a>
+{% endblock %}
 {% block page_content %}
-    <h1>Pagerank</h1>
+    <div class="row">
+        <h1>Pagerank</h1>
+    </div>
     <form action="{{ url_for('search_results') }}">
         <div class="row">
             {{ render_field(form.searchVal) }}
