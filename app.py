@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 
 from forms import SearchForm
+from search import Searcher
 
 app = Flask(__name__)
 
@@ -18,10 +19,11 @@ def search_results():
     # slovniku, ktery v sobe maji name, url a text(to bude asi prvnich x pismen, nahled). Pokud by se
     # to melo jmenovat jinak tak to v templatu klidne zmen. Slovo mas v promenne search value
     search_value = request.args['searchVal']
-    print(search_value)
+    s =  Searcher()
+    vals = s.search(search_value) 
     tmp_values = [{'name': 'Test', 'url': 'https://www.wikipedia.com', 'text': 'Toto je demonstrativní text'},
                   {'name': 'TestTestovič', 'url': 'https://www.wikipedia.cz', 'text': 'Lorem ipsum dolor et samet'}]
-    return render_template('search_results.html', search_value=search_value, return_values=tmp_values)
+    return render_template('search_results.html', search_value=search_value, return_values=vals)
 
 
 if __name__ == '__main__':
