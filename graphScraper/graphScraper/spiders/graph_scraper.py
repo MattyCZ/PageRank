@@ -3,18 +3,25 @@ import scrapy
 from bs4 import BeautifulSoup
 import slugify
 from threading import Lock
+from urllib.parse import urlparse
+from ..items import GraphscraperItem
 
-from graphScraper.items import GraphscraperItem
 
 
 class GraphScraperSpider(scrapy.Spider):
     name = 'graph_scraper'
-    start_urls = ['https://en.wikipedia.org/wiki/Main_Page']
-    max_pages = 100
-    visited = set()
-    scraped = 0
-    mutex = Lock()
-    allowed_domains = ['en.wikipedia.org']
+
+    def __init__(self, max_pages=100, start_urls=None, stay_on_domains=True, **kw):
+        super(GraphScraperSpider, self).__init__(**kw)
+        if start_urls is None:
+            start_urls = ['https://en.wikipedia.org/wiki/Main_Page']
+        self.start_urls = start_urls
+        if stay_on_domains:
+            self.allowed_domains = [urlparse(x).netloc for x in start_urls]
+        self.max_pages = max_pages
+        self.visited = set()
+        self.scraped = 0
+        self.mutex = Lock()
 
     def parse(self, response):
 
@@ -35,7 +42,7 @@ class GraphScraperSpider(scrapy.Spider):
 
         self.visited.add(slug)
 
-        for link in links:
+        for link in links :
             link_slug = slugify.slugify(link)
             item["outlinks"].add(link_slug)
 
@@ -51,3 +58,5 @@ class GraphScraperSpider(scrapy.Spider):
             return
         self.mutex.release()
         yield item
+
+
