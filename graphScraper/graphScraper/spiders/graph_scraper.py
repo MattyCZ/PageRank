@@ -7,14 +7,14 @@ from threading import Lock
 from graphScraper.items import GraphscraperItem
 
 
-
 class GraphScraperSpider(scrapy.Spider):
     name = 'graph_scraper'
-    start_urls = ['https://en.wikipedia.org/wiki/Main_Page', 'https://dmoz-odp.org/']
+    start_urls = ['https://en.wikipedia.org/wiki/Main_Page']
     max_pages = 100
     visited = set()
     scraped = 0
     mutex = Lock()
+    allowed_domains = ['en.wikipedia.org']
 
     def parse(self, response):
 
@@ -35,7 +35,7 @@ class GraphScraperSpider(scrapy.Spider):
 
         self.visited.add(slug)
 
-        for link in links :
+        for link in links:
             link_slug = slugify.slugify(link)
             item["outlinks"].add(link_slug)
 
@@ -51,5 +51,3 @@ class GraphScraperSpider(scrapy.Spider):
             return
         self.mutex.release()
         yield item
-
-

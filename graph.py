@@ -1,5 +1,6 @@
 import json
 
+
 class Node:
     def __init__(self):
         self.name = None
@@ -8,6 +9,7 @@ class Node:
         self.url = None
         self.text = None
         self.index = None
+
 
 class Graph:
     def __init__(self):
@@ -22,7 +24,7 @@ class Graph:
 
     def load(self):
         nodes = dict()
-        with open("graphScraper/sitegraph.json") as file :
+        with open("graphScraper/sitegraph.json") as file:
             for index, line in enumerate(file):
                 j = json.loads(line)
 
@@ -39,7 +41,8 @@ class Graph:
 
         # clean outlinks from unexisting pages and change the slugs to indexes.
         for key in nodes:
-            nodes[key].outlinks = [nodes[x].index for x in nodes[key].outlinks if x in nodes.keys() and x != nodes[key].name]
+            nodes[key].outlinks = [nodes[x].index for x in nodes[key].outlinks if
+                                   x in nodes.keys() and x != nodes[key].name]
 
         for key in nodes:
             self.graph[nodes[key].index] = nodes[key]
