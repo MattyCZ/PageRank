@@ -6,6 +6,7 @@ from search import Searcher
 
 app = Flask(__name__)
 Bootstrap(app)
+# s = Searcher()
 
 
 @app.route('/')
@@ -19,7 +20,6 @@ def search_results():
     search_value = request.args['searchVal']
     vals = [{'name': 'Test', 'url': 'https://www.wikipedia.com', 'text': 'Toto je demonstrativní text'},
             {'name': 'TestTestovič', 'url': 'https://www.wikipedia.cz', 'text': 'Lorem ipsum dolor et samet'}]
-    # s = Searcher()
     # vals = s.search(search_value)
     form = SearchForm()
     return render_template('search_results.html', search_value=search_value, return_values=vals, form=form)
