@@ -1,9 +1,7 @@
 import os
 import subprocess
-
 from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
-
 from forms import SearchForm, ScrapeForm
 from scraper import Scraper
 from graph import Graph
@@ -16,6 +14,7 @@ Bootstrap(app)
 
 scraped_data = f'{os.path.dirname(os.path.realpath(__file__))}/scraped_data.json'
 graph_data = f'{os.path.dirname(os.path.realpath(__file__))}/graph_data.json'
+
 indexdir = 'indexdir'
 
 scraper = Scraper(scraped_data)
@@ -53,14 +52,13 @@ def scrape_data():
         stay_on_domain = str(request.form['stay_on_domain'])
         update_existing = request.form['update_existing']
 
-        subprocess.call(['python', 'scrapeScript.py', max_pages, start_url, stay_on_domain])
+        subprocess.call(['python', 'scrapeScript.py',scraped_data,max_pages, start_url, stay_on_domain])
         if update_existing == 'True':
             graph.addToExisting(graph_data,scraped_data,graph_data)
             indexer.updateIndex(graph_data,indexdir)
         else:
             graph.createNewGraph(scraped_data, graph_data)
             indexer.createIndex(graph_data, indexdir)
-        print(update_existing)
     else:
         print(request.method)
     return render_template('scrape_new.html', form=form, scrape_form=scrape_form)

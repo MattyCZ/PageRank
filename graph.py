@@ -24,8 +24,9 @@ class Graph:
     def readInput(self, input, start=0):
         nodes = dict()
         if not os.path.exists(input):
-            print(f'the given file{input} does not exists.\n')
+            print(f'the given file{ input} does not exists.\n')
             return
+
         with open(input, 'r', encoding='utf8') as file:
             for index, line in enumerate(file,start=start):
                 j = json.loads(line)
@@ -43,7 +44,7 @@ class Graph:
 
     def save(self, output, overwrite=True):
         if os.path.exists(output) and overwrite:
-            print(f'the given file{output} already exists, overwriting...\n')
+            print(f'the given file {output} already exists, overwriting...\n')
             os.remove(output)
 
         with open(output, 'w', encoding='utf8') as f:
@@ -63,6 +64,9 @@ class Graph:
     def createNewGraph(self, input, output, save=True):
 
         nodes = self.readInput(input)
+        if nodes is None:
+            return
+
         self.size = len(nodes)
         # clean outlinks from unexisting pages and change the slugs to indexes.
         for key in nodes:
@@ -74,7 +78,7 @@ class Graph:
 
     def loadExisting(self, input):
         if not os.path.exists(input):
-            print(f'the given file{input} does not exists.\n')
+            print(f'the given file {input} does not exists.\n')
             return
 
         with open(input, 'r', encoding='utf8') as file :
