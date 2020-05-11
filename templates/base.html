@@ -1,22 +1,24 @@
 {% extends "bootstrap/base.html" %}
-{% from "_macros.html" import render_field %}
+{% from "_macros.html" import render_field, render_radio_fields %}
 
 {% block navbar %}
-    <a href="/" class="navbar-left"><img src="{{ url_for('.static', filename='logo.PNG') }}"></a>
-    <form action="{{ url_for('search_results') }}">
-        <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="input-group stylish-input-group">
-                    {{ form.searchVal(class_='form-control', value=search_value or '')|safe }}
-                    <span class="input-group-addon">
+    <div class="navbar-dark sticky-top">
+        <a href="/" class="navbar-left"><img src="{{ url_for('.static', filename='logo.PNG') }}"></a>
+        <form action="{{ url_for('search_results') }}">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="input-group stylish-input-group">
+                        {{ form.searchVal(class_='form-control', value=search_value or '')|safe }}
+                        <span class="input-group-addon">
                         <button type="submit">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 {% endblock %}
 
 {% block head %}

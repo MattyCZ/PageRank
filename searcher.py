@@ -11,4 +11,4 @@ class Searcher:
         rank = self.pageRank.calculateRank()
         valid_pages = self.indexer.searchIndex(indexdir, term)
         result = [page for page in rank if page.index in valid_pages]
-        print(result)
+        return result

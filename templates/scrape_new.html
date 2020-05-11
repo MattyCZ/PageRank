@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+    Select new scrape source
+{% endblock %}
+
+{% block page_content %}
+    <form action="{{ url_for('scrape_data') }}" method="POST">
+        <div class="row">
+            <div class="col-2">
+                {{ render_field(scrape_form.max_pages) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                {{ render_field(scrape_form.start_url) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                {{ render_radio_fields(scrape_form.stay_on_domain) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <button class="btn btn-primary">Scrape</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
