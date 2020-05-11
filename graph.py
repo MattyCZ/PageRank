@@ -41,7 +41,7 @@ class Graph:
 
         return nodes
 
-    def save(self,output, overwrite=True):
+    def save(self, output, overwrite=True):
         if os.path.exists(output) and overwrite:
             print(f'the given file{output} already exists, overwriting...\n')
             os.remove(output)
@@ -60,7 +60,7 @@ class Graph:
                 json.dump(data,f)
                 f.write('\n')
 
-    def createNewGraph(self, input, output='', save=True):
+    def createNewGraph(self, input, output, save=True):
 
         nodes = self.readInput(input)
         self.size = len(nodes)

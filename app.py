@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
@@ -18,18 +19,8 @@ graph_data = f'{os.path.dirname(os.path.realpath(__file__))}/graph_data.json'
 indexdir = 'indexdir'
 
 scraper = Scraper(scraped_data)
-# scraper.run(max_pages=100, start_urls=['https://en.wikipedia.org/wiki/Main_Page', 'https://dmoz-odp.org/'], stay_on_domains=False)
-
 graph = Graph()
-# graph.createNewGraph(scraped_data,graph_data)
-graph.loadExisting(graph_data)
-
 indexer = Indexer()
-# indexer.createIndex(graph_data, indexdir)
-
-pageRank = PageRank(graph)
-
-searcher = Searcher(pageRank, indexer)
 
 
 @app.route('/')
@@ -40,6 +31,12 @@ def index():
 
 @app.route('/search_results')
 def search_results():
+
+    graph.loadExisting(graph_data)
+    pageRank = PageRank(graph)
+
+    searcher = Searcher(pageRank, indexer)
+
     search_value = request.args['searchVal']
     vals = searcher.search(indexdir, search_value)
     form = SearchForm()
@@ -51,9 +48,19 @@ def scrape_data():
     form = SearchForm()
     scrape_form = ScrapeForm()
     if request.method == 'POST':
-        os.system(f'python scrapeScript.py {scrape_form.max_pages} "{scrape_form.start_url}" {scrape_form.stay_on_domain}')
-        graph.createNewGraph(scraped_data, graph_data)
-        indexer.createIndex(graph_data, indexdir)
+        max_pages = str(request.form['max_pages'])
+        start_url = str(request.form['start_url'])
+        stay_on_domain = str(request.form['stay_on_domain'])
+        update_existing = request.form['update_existing']
+
+        subprocess.call(['python', 'scrapeScript.py', max_pages, start_url, stay_on_domain])
+        if update_existing == 'True':
+            graph.addToExisting(graph_data,scraped_data,graph_data)
+            indexer.updateIndex(graph_data,indexdir)
+        else:
+            graph.createNewGraph(scraped_data, graph_data)
+            indexer.createIndex(graph_data, indexdir)
+        print(update_existing)
     else:
         print(request.method)
     return render_template('scrape_new.html', form=form, scrape_form=scrape_form)

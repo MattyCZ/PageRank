@@ -16,7 +16,7 @@ class Indexer:
 
     def updateIndex(self, file, dir):
         if not os.path.exists(dir) or not exists_in(dir):
-            print(f'the given directory{dir} does not exists or does not contain valid index.\n')
+            print(f'the given directory {dir} does not exists or does not contain valid index.\n')
             return
         self.ix = open_dir(dir)
         self.writer = self.ix.writer()
@@ -28,7 +28,7 @@ class Indexer:
                 j = json.loads(line)
                 if j['index'] in indexes:
                     continue
-                self.writer.add_document(title=j["title"].unicode('utf8'), content=j['text'].unicode('utf8'), index=j['index'])
+                self.writer.add_document(title=j["title"], content=j['text'], index=j['index'])
         self.directory = dir
         self.writer.commit()
 
@@ -37,6 +37,12 @@ class Indexer:
             print("directory already exists and does not contain any index, deleting and creating new index...\n")
             shutil.rmtree(directory)
             os.mkdir(directory)
+
+        if not os.path.exists(directory):
+            os.mkdir(directory)
+
+        if exists_in(directory):
+            print("overwriting current index...\n")
 
         self.directory = directory
         self.ix = create_in(directory, self.schema)
