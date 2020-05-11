@@ -5,7 +5,7 @@
         <h4>Search results for {{ search_value }}</h4>
         <ul>
             {% for val in return_values %}
-                <li><h5><a href="{{ val['url'] }}">{{ val['name'] }} </a></h5>
+                <li><h5><a href="{{ val['url'] }}">{{ val['title'] }} </a></h5>
                     {{ val['text'] }}</li>
             {% endfor %}
         </ul>

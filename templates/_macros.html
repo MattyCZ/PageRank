@@ -11,3 +11,19 @@
     </div>
 </div>
 {% endmacro %}
+
+{% macro render_radio_fields(field) %}
+<div class="form-group">
+    <label class="col-lg-4 control-label">{{ field.label.text }}</label>
+    <div class="col-lg-10">
+    {% for subfield in field %}
+    <div class="radio">
+        <label>
+            {{ subfield }}
+            {{ subfield.label.text }}
+        </label>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+{% endmacro %}

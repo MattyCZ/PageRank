@@ -27,7 +27,6 @@ FEED_EXPORTERS = {
 }
 
 #FEED_FORMAT="jsonlines"
-FEED_URI="sitegraph.json"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
