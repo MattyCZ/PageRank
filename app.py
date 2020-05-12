@@ -43,7 +43,7 @@ def search_results():
 
 
 @app.route('/scrape_new', methods=['GET', 'POST'])
-def scrape_data():
+def scrape_new():
     form = SearchForm()
     scrape_form = ScrapeForm()
     if request.method == 'POST':
