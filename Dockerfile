@@ -1,4 +1,4 @@
-FROM python:3.7-alpine
+FROM python:3.8-alpine
 MAINTAINER chladond "chladond@fit.cvut.cz"
 WORKDIR /code
 ENV FLASK_APP app.py
