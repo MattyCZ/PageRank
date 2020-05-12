@@ -1,13 +1,18 @@
-# PageSkunk (Page rank)
+# Page rank
 
-## Crawler usage:
+## Deploy preferred with docker 
+Have docker and docker-compose installed
 
-`cd wikiscrape`
+Than run `docker-compose up` optionally with `-d` parameter to created detached container
 
-`scrapy crawl wikiscrape -o filename.json`
-
-## First install requirements
-`pip install -r requirements.txt`
-
+## Or manually with python3
 Optionally create venv by
 `python3 -m venv venv`
+
+Than install requirements by
+
+`pip install -r requirements.txt`
+
+Run 
+
+`python3 app.py`
