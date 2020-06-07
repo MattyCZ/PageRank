@@ -1,0 +1,17 @@
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>venv\r\ndatabase
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .gitignore	(revision 5dfe8d2fc88866434fd680be59c483aa152e8963)
++++ .gitignore	(date 1589227298146)
+@@ -1,2 +1,4 @@
+ venv
+-database
+\ No newline at end of file
++database
++env
++.gitignore
+\ No newline at end of file

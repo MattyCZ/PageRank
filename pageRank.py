@@ -18,26 +18,25 @@ class ResultNode:
 
 
 class PageRank:
-    def __init__(self, graph, dumping=0.15, iterations=10):
-        # graph, on which the PageRank will be calculated.
-        self.graph = graph
-        # dumping factor
-        self.p = dumping
-        # number of max iterations
-        self.MAX_ITER = iterations
-        # number of pages to be searched
-        self.num_of_pages = graph.size
-        # google matrix for ranking
-        self.google_matrix = None
-        # load graph and adjanced data
-        self.createGoogleMatrix()
-
     '''
     creates the google matrix where M = (1-p)*A + p.B. B = 1/n * [[1...1]...[1...1]]
     more explained on following url : https://bit.ly/2SPN3LA
     '''
 
-    def createGoogleMatrix(self):
+    def __init__(self, graph, dumping=0.15, iterations=10):
+        self.graph = graph
+        self.p = dumping
+        self.MAX_ITER = iterations
+        self.num_of_pages = graph.size
+        self.google_matrix = None
+
+        # load graph and adjanced data
+        self.create_google_matrix()
+
+    def create_google_matrix(self):
+        """
+        Loads matrices A and B and creates google matrix from them
+        """
         matrixA = np.zeros(shape=(self.num_of_pages, self.num_of_pages))
 
         # load matrix A
@@ -59,7 +58,7 @@ class PageRank:
         # final google matrix
         self.google_matrix = matrixA + matrixB
 
-    def calculateRank(self):
+    def calculate_rank(self):
         result = []
         # create vector V and iterate over it to gain better results
         vec = np.full(self.num_of_pages, 1 / self.num_of_pages)

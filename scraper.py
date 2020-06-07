@@ -3,6 +3,7 @@ from graphScraper.graphScraper.spiders.graph_scraper import GraphScraperSpider
 import os
 import platform
 
+
 class Scraper:
     def __init__(self, output):
         print(output)
@@ -14,10 +15,10 @@ class Scraper:
             output = output.replace('\\', '/')
             output = f'file:///{output}'
         self.settings = {
-        "FEEDS": {
-                output: {"format": "jsonlines"},
+            'FEEDS': {
+                output: {'format': 'jsonlines'},
             },
-            "CONCURRENT_REQUESTS" : 32,
+            'CONCURRENT_REQUESTS': 32,
         }
 
     def run(self, max_pages, start_urls, stay_on_domains):

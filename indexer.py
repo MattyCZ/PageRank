@@ -34,7 +34,7 @@ class Indexer:
 
     def createIndex(self, file, directory):
         if os.path.exists(directory) and not exists_in(directory):
-            print("directory already exists and does not contain any index, deleting and creating new index...\n")
+            print('Directory already exists and does not contain any index, deleting and creating new index...\n')
             shutil.rmtree(directory)
             os.mkdir(directory)
 
@@ -42,7 +42,7 @@ class Indexer:
             os.mkdir(directory)
 
         if exists_in(directory):
-            print("overwriting current index...\n")
+            print('overwriting current index...\n')
 
         self.directory = directory
         self.ix = create_in(directory, self.schema)
@@ -53,18 +53,19 @@ class Indexer:
         with open(file, 'r', encoding='utf8') as f:
             for line in f:
                 j = json.loads(line)
-                self.writer.add_document(title=j["title"], content=j['text'], index=j['index'])
+                self.writer.add_document(title=j['title'], content=j['text'], index=j['index'])
         self.writer.commit()
 
     def searchIndex(self, directory, term):
         if not os.path.exists(directory) or not exists_in(directory):
-            print("Selected directory does not exists or does not contain any valid index. Please try again with valid directory..\n")
+            print(
+                'Selected directory does not exists or does not contain any valid index. Please try again with valid directory..\n')
             return
 
         self.ix = open_dir(directory)
 
         with self.ix.searcher() as searcher:
             og = whoosh.qparser.OrGroup.factory(0.9)
-            query = MultifieldParser(["content", "title"], self.schema, group=og).parse(term)
+            query = MultifieldParser(['content', 'title'], self.schema, group=og).parse(term)
             results = searcher.search(query, limit=None)
             return [x['index'] for x in results]

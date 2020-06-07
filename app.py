@@ -24,18 +24,21 @@ indexer = Indexer()
 
 @app.route('/')
 def index():
+    """
+    Displays main page.
+    """
     form = SearchForm()
     return render_template('main_page.html', form=form)
 
 
 @app.route('/search_results')
 def search_results():
-
+    """
+    Displays search results ordered by pagerank.
+    """
     graph.loadExisting(graph_data)
     pageRank = PageRank(graph)
-
     searcher = Searcher(pageRank, indexer)
-
     search_value = request.args['searchVal']
     vals = searcher.search(indexdir, search_value)
     form = SearchForm()
@@ -44,6 +47,10 @@ def search_results():
 
 @app.route('/scrape_new', methods=['GET', 'POST'])
 def scrape_new():
+    """
+    Allows to modify scraping source or amount of scraped data. New data can overwrite
+    old or can be appended
+    """
     form = SearchForm()
     scrape_form = ScrapeForm()
     if request.method == 'POST':
@@ -52,10 +59,11 @@ def scrape_new():
         stay_on_domain = str(request.form['stay_on_domain'])
         update_existing = request.form['update_existing']
 
-        subprocess.call(['python', 'scrapeScript.py',scraped_data,max_pages, start_url, stay_on_domain])
+        # Scraping needs to be called from main thread
+        subprocess.call(['python', 'scrapeScript.py', scraped_data, max_pages, start_url, stay_on_domain])
         if update_existing == 'True':
-            graph.addToExisting(graph_data,scraped_data,graph_data)
-            indexer.updateIndex(graph_data,indexdir)
+            graph.addToExisting(graph_data, scraped_data, graph_data)
+            indexer.updateIndex(graph_data, indexdir)
         else:
             graph.createNewGraph(scraped_data, graph_data)
             indexer.createIndex(graph_data, indexdir)
